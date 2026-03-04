@@ -1,0 +1,18 @@
+
+        {/* Right Wing */}
+        <group position={[1.5, 0, 0]} rotation={[0, 0, -Math.PI / 2]}>
+          <BlueprintMesh geometry={connectorGeo} position={[0, 0.5, 0]} />
+          <BlueprintMesh 
+            geometry={solarPanelGeo} 
+            position={[0, 2.5, 0]}
+            focused={focusState === 'solarArrays'}
+          >
+             {/* Nest the instanced cells on top of the wireframe base */}
+             <group position={[0, 0, 0.1]} rotation={[0, 0, 0]}>
+                <SolarPanelArray focused={focusState === 'solarArrays'} />
+             </group>
+             <group position={[0, 0, -0.1]} rotation={[0, Math.PI, 0]}>
+                <SolarPanelArray focused={focusState === 'solarArrays'} />
+             </group>
+          </BlueprintMesh>
+        </group>
