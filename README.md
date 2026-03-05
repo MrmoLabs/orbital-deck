@@ -37,7 +37,7 @@ Rogue Station is an interactive WebGL-based visualization built with React and T
 
 1. Clone the repository:
    ```bash
-   git clone [repository-url]
+   git clone https://github.com/Mrmo072/rogue-station.git
    cd rogue-station
    ```
 

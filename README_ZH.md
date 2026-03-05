@@ -37,7 +37,7 @@ Rogue Station 是一套基于 WebGL 的交互式可视化系统，采用 React �
 
 1. 克隆仓库：
    ```bash
-   git clone [repository-url]
+   git clone https://github.com/Mrmo072/rogue-station.git
    cd rogue-station
    ```
 
