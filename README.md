@@ -10,7 +10,10 @@ Rogue Station is an interactive WebGL-based visualization built with React and T
 
 ## ✨ Features
 
-- **Fleet of 6 Real Spacecraft**: Switch between NASA 3D Resources assets from the top FLEET bar — SDO, Hubble (HST), TDRS, GOES, SOHO and an SSL-1300 communications bus. Each model is auto-normalized to one camera envelope.
+- **Unified Cockpit Layout**: Full-width top bar (logo · FLEET dropdown · clock/badges) and full-width bottom strip (toggles · hint · STYLE dropdown), with the subsystem matrix panelized as a left rail and a 1px corner-tick viewport frame around the 3D stage.
+- **Fleet of 6 Real Spacecraft**: Switch between NASA 3D Resources assets via the FLEET dropdown in the top bar — SDO, Hubble (HST), TDRS, GOES, SOHO and an SSL-1300 communications bus. Each model is auto-normalized to one camera envelope.
+- **6 Interface Themes**: Pick from the STYLE dropdown in the bottom bar (or cycle with the `T` key) — FUI Classic, YoRHa industrial terminal (flat sand/charcoal panels), CRT phosphor (scanlines + glow), Glassmorphism (frosted rounded panels), Blueprint (light drafting paper) and Mil-Spec radar (dashed borders + corner brackets). Each theme is a full visual restyle with its own palette — panel shapes, borders, materials and decorations all follow; choice persists across reloads.
+- **Per-Theme 3D Backdrops**: The scene is not hardwired to a starfield — every theme gets a gradient sky plus its own backdrop layer: drifting starfield (FUI), floating amber dust (YoRHa), bare phosphor glow (CRT), aurora bokeh (Glass), drafting grid floor/wall (Blueprint) and a radar scope with rotating sweep (Mil-Spec).
 - **Subsystem Inspection**: Click any part in 3D (raycast picking) or use the subsystem matrix — the camera flies to that module, everything else dims, and the focused part pulses with a cyan glow. Part classification is derived per-model from GLB material names.
 - **Geometry-Anchored Camera Pivots**: Orbit targets use the vertex-mean centroid (snapped onto real geometry when it floats in a gap), so rotating the view always pivots around the part you see — never around a floating label.
 - **Drag-Safe Gestures**: A drag that ends over empty space no longer counts as a "click blank to return to overview" — manual camera moves stay put.
@@ -18,7 +21,7 @@ Rogue Station is an interactive WebGL-based visualization built with React and T
 - **Blueprint Mode**: One click turns the whole spacecraft into the classic wireframe/holographic look.
 - **Cinematic Transitions**: Smooth camera choreography powered by GSAP + OrbitControls; focusing eases the model back to its canonical orientation.
 - **Boot Sequence**: Loading screen with Draco decode progress, re-armed on every fleet switch.
-- **Post-Processing**: Bloom + vignette over a starfield.
+- **Post-Processing**: Bloom + vignette over the per-theme gradient sky.
 
 ## 🛠️ Tech Stack
 
@@ -66,16 +69,18 @@ Rogue Station is an interactive WebGL-based visualization built with React and T
 - `public/draco/`: Locally bundled Draco decoder (no CDN dependency).
 - `src/lib/`: Domain logic.
   - `fleet.ts`: Fleet registry — per-model subsystem rules, camera directions, telemetry channels.
+  - `themes.ts`: Page theme registry — 6 interface styles (palette + panel/border/material tokens, scene gradient stops, backdrop kind), dropdown labels, persistence.
   - `parts.ts`: Mesh analysis (surface-attached pivots per subsystem, scale normalization) and camera framing.
   - `telemetry.ts`: Simulated telemetry random walk.
   - `dragGuard.ts`: Distinguishes orbit drags from genuine clicks.
 - `src/scene/`: 3D layer.
-  - `Experience.tsx`: Canvas, lighting rig, starfield, post-processing.
+  - `Experience.tsx`: Canvas, lighting rig, gradient sky, post-processing.
+  - `Backdrop.tsx`: Per-theme scene background (gradient texture + starfield / dust / aurora / drafting grid / radar scope).
   - `SatelliteScene.tsx`: Model rendering, per-subsystem highlight/dim, raycast picking.
   - `CameraRig.tsx`: GSAP camera choreography.
   - `PartMarker.tsx`: Anchored HUD markers.
-- `src/ui/`: HUD layer (top bar, fleet selector, subsystem matrix, telemetry panel, bottom bar, boot screen).
-- `scripts/smoke-test.mjs`: Headless Chrome smoke test (covers fleet switching + drag-guard regression).
+- `src/ui/`: HUD layer (top bar with fleet dropdown, left subsystem rail, telemetry panel, bottom strip with style dropdown, dropdown primitive, boot screen).
+- `scripts/smoke-test.mjs`: Headless Chrome smoke test (covers both dropdowns, all 6 themes/5 fleet models + drag-guard regression).
 
 ## 📦 3D Assets
 

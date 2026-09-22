@@ -7,8 +7,6 @@
 export type FocusId = string; // 'overview' | a PartDef id
 export const OVERVIEW: FocusId = 'overview';
 
-export const FUI_CYAN = '#00f7ff';
-
 /** A single simulated telemetry channel. */
 export interface MetricDef {
     key: string;

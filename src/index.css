@@ -3,14 +3,275 @@
     line-height: 1.5;
     font-weight: 400;
     color-scheme: dark;
-    background-color: #04060b;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    --fui-cyan: #00f7ff;
+
+    /* ============ THEME TOKENS — FUI CLASSIC (default) ============
+       Color tokens are paired with src/lib/themes.ts (accent/bg feed the
+       WebGL scene). Shape/material tokens restyle panels, borders and
+       controls per theme. */
+    --fui-accent: #00f7ff;
+    --fui-accent-rgb: 0, 247, 255;
+    --fui-accent-soft: #7ef7ff;
     --fui-bg: #04060b;
+    --fui-text-hi: #e8feff;
+    --fui-text-dim: #7fa8b5;
+    --fui-text-dim-rgb: 127, 168, 181;
+    --fui-text-mid: #b9f6ff;
+    --fui-muted-rgb: 160, 200, 210;
+    --fui-ok: #39ff9e;
+    --fui-ok-rgb: 57, 255, 158;
+    --fui-warn: #ffb300;
+    --fui-warn-rgb: 255, 179, 0;
+
+    /* material / shape */
+    --fui-panel-rgb: 4, 8, 14;
+    --panel-radius: 0;
+    --panel-btn-radius: 0;
+    --panel-blur: blur(6px);
+    --panel-shadow: 0 0 24px rgba(0, 0, 0, 0.5);
+    --panel-border-w: 1px;
+    --panel-border-style: solid;
+    --panel-border: rgba(var(--fui-accent-rgb), 0.22);
+    --panel-border-strong: rgba(var(--fui-accent-rgb), 0.7);
+    --panel-solid: rgba(var(--fui-panel-rgb), 0.78);
+    --panel-soft: rgba(var(--fui-panel-rgb), 0.62);
+    --item-bg: rgba(var(--fui-panel-rgb), 0.72);
+    --item-active-bg: rgba(var(--fui-accent-rgb), 0.16);
+    --bar-bg: linear-gradient(180deg, rgba(var(--fui-panel-rgb), 0.95), rgba(var(--fui-panel-rgb), 0.45));
+    --hud-label: rgba(var(--fui-accent-rgb), 0.5);
+    --hud-hint: rgba(var(--fui-text-dim-rgb), 0.7);
+    --boot-bg: radial-gradient(ellipse at center, rgba(var(--fui-accent-rgb), 0.16), var(--fui-bg) 70%),
+        var(--fui-bg);
+
+    /* chrome: display font for headings/logo (theme may swap the family),
+       corner-grid density, cockpit frame corner-tick color */
+    --font-display: 'Consolas', 'Cascadia Code', 'Courier New', monospace;
+    --grid-op: 0.035;
+    --frame-c: rgba(0, 247, 255, 0.5);
 }
+
+/* YoRHa: sand-and-charcoal industrial terminal — flat opaque panels,
+   zero radius, no blur, no shadow, hairline amber borders. */
+[data-theme='yorha'] {
+    --fui-accent: #d9a441;
+    --fui-accent-rgb: 217, 164, 65;
+    --fui-accent-soft: #e8cf9b;
+    --fui-bg: #17140f;
+    --fui-text-hi: #f1e9d8;
+    --fui-text-dim: #a89e88;
+    --fui-text-dim-rgb: 168, 158, 136;
+    --fui-text-mid: #d9cfb8;
+    --fui-muted-rgb: 190, 182, 164;
+    --fui-ok: #b9c996;
+    --fui-ok-rgb: 185, 201, 150;
+    --fui-warn: #cf7a4d;
+    --fui-warn-rgb: 207, 122, 77;
+
+    --fui-panel-rgb: 30, 27, 21;
+    --panel-blur: none;
+    --panel-shadow: none;
+    --panel-border: rgba(217, 164, 65, 0.4);
+    --panel-border-strong: rgba(217, 164, 65, 0.9);
+    --panel-solid: rgba(30, 27, 21, 0.96);
+    --panel-soft: rgba(30, 27, 21, 0.88);
+    --item-bg: rgba(30, 27, 21, 0.9);
+    --item-active-bg: rgba(217, 164, 65, 0.15);
+    --bar-bg: rgba(30, 27, 21, 0.97);
+    --hud-label: rgba(217, 164, 65, 0.6);
+    /* serif headings sell the YoRHa print aesthetic */
+    --font-display: 'Georgia', 'Times New Roman', serif;
+    --grid-op: 0.018;
+    --frame-c: rgba(217, 164, 65, 0.55);
+}
+
+/* CRT: monochrome phosphor terminal — near-black glass, strong bloom,
+   scanline overlay (see decoration rules below). */
+[data-theme='crt'] {
+    --fui-accent: #3dff7a;
+    --fui-accent-rgb: 61, 255, 122;
+    --fui-accent-soft: #a6ffc9;
+    --fui-bg: #020604;
+    --fui-text-hi: #d6ffe4;
+    --fui-text-dim: #5f9e75;
+    --fui-text-dim-rgb: 95, 158, 117;
+    --fui-text-mid: #8affb5;
+    --fui-muted-rgb: 130, 190, 155;
+    --fui-ok: #3dff7a;
+    --fui-ok-rgb: 61, 255, 122;
+    --fui-warn: #ffb73d;
+    --fui-warn-rgb: 255, 183, 61;
+
+    --fui-panel-rgb: 2, 8, 5;
+    --panel-blur: none;
+    --panel-shadow: 0 0 22px rgba(var(--fui-accent-rgb), 0.15);
+    --panel-border: rgba(var(--fui-accent-rgb), 0.4);
+    --panel-border-strong: rgba(var(--fui-accent-rgb), 0.9);
+    --panel-solid: rgba(var(--fui-panel-rgb), 0.7);
+    --panel-soft: rgba(var(--fui-panel-rgb), 0.55);
+    --item-bg: rgba(var(--fui-panel-rgb), 0.6);
+    --item-active-bg: rgba(var(--fui-accent-rgb), 0.16);
+    --bar-bg: rgba(var(--fui-panel-rgb), 0.85);
+    --grid-op: 0.03;
+    --frame-c: rgba(61, 255, 122, 0.5);
+}
+
+/* Glassmorphism: frosted panels — rounded corners, heavy backdrop blur,
+   white-gradient material, soft drop shadows. */
+[data-theme='glass'] {
+    --fui-accent: #8ab4ff;
+    --fui-accent-rgb: 138, 180, 255;
+    --fui-accent-soft: #c3d7ff;
+    --fui-bg: #0b1020;
+    --fui-text-hi: #f2f6ff;
+    --fui-text-dim: #9fb2d4;
+    --fui-text-dim-rgb: 159, 178, 212;
+    --fui-text-mid: #cdd9f2;
+    --fui-muted-rgb: 176, 190, 220;
+    --fui-ok: #5ef0b5;
+    --fui-ok-rgb: 94, 240, 181;
+    --fui-warn: #ffcf66;
+    --fui-warn-rgb: 255, 207, 102;
+
+    --fui-panel-rgb: 255, 255, 255;
+    --panel-radius: 14px;
+    --panel-btn-radius: 10px;
+    --panel-blur: blur(18px);
+    --panel-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    --panel-border: rgba(255, 255, 255, 0.25);
+    --panel-border-strong: rgba(255, 255, 255, 0.6);
+    --panel-solid: linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.06));
+    --panel-soft: rgba(255, 255, 255, 0.1);
+    --item-bg: rgba(255, 255, 255, 0.1);
+    --item-active-bg: rgba(138, 180, 255, 0.26);
+    --bar-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.05));
+    --hud-label: rgba(195, 215, 255, 0.75);
+    --hud-hint: rgba(159, 178, 212, 0.85);
+    /* frosted & airy: sans headings, no corner grid, no frame ticks */
+    --font-display: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    --grid-op: 0;
+    --frame-c: transparent;
+}
+
+/* Blueprint: light drafting-paper UI floating over the dark scene —
+   solid ink-blue borders, dark ink text, paper boot sheet. */
+[data-theme='blueprint'] {
+    --fui-accent: #1565d8;
+    --fui-accent-rgb: 21, 101, 216;
+    --fui-accent-soft: #4a8ee0;
+    --fui-bg: #0a1a2e;
+    --fui-text-hi: #0f2740;
+    --fui-text-dim: #3f5f7d;
+    --fui-text-dim-rgb: 63, 95, 125;
+    --fui-text-mid: #1d3c5c;
+    --fui-muted-rgb: 74, 102, 130;
+    --fui-ok: #1a7f4f;
+    --fui-ok-rgb: 26, 127, 79;
+    --fui-warn: #b3610a;
+    --fui-warn-rgb: 179, 97, 10;
+
+    --fui-panel-rgb: 235, 242, 249;
+    --panel-blur: none;
+    --panel-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+    --panel-border: rgba(21, 101, 216, 0.5);
+    --panel-border-strong: rgba(21, 101, 216, 0.95);
+    --panel-solid: rgba(235, 242, 249, 0.95);
+    --panel-soft: rgba(235, 242, 249, 0.85);
+    --item-bg: rgba(235, 242, 249, 0.9);
+    /* opaque: a translucent tint would reveal the dark scene behind the
+       floating nav/chips and drown the dark ink text */
+    --item-active-bg: #d6e4f6;
+    --bar-bg: rgba(235, 242, 249, 0.96);
+    /* unpanelled HUD text must stay light over the dark scene */
+    --hud-label: #8fb8ea;
+    --hud-hint: rgba(190, 214, 240, 0.85);
+    --boot-bg: radial-gradient(ellipse at center, rgba(21, 101, 216, 0.22), #eef3f9 70%), #eef3f9;
+    --grid-op: 0.055;
+    --frame-c: rgba(96, 158, 235, 0.65);
+}
+
+/* Mil-Spec: olive field-equipment radar — dashed borders, scope-green
+   status, corner brackets (see decoration rules below). */
+[data-theme='milspec'] {
+    --fui-accent: #7dff5c;
+    --fui-accent-rgb: 125, 255, 92;
+    --fui-accent-soft: #b8ff9e;
+    --fui-bg: #0a0e07;
+    --fui-text-hi: #e4f0d8;
+    --fui-text-dim: #8fa382;
+    --fui-text-dim-rgb: 143, 163, 130;
+    --fui-text-mid: #c2d9ad;
+    --fui-muted-rgb: 158, 172, 142;
+    --fui-ok: #7dff5c;
+    --fui-ok-rgb: 125, 255, 92;
+    --fui-warn: #ffb84d;
+    --fui-warn-rgb: 255, 184, 77;
+
+    --fui-panel-rgb: 14, 18, 10;
+    --panel-blur: blur(2px);
+    --panel-shadow: 0 0 18px rgba(0, 0, 0, 0.55);
+    --panel-border-style: dashed;
+    --panel-border: rgba(125, 255, 92, 0.45);
+    --panel-border-strong: rgba(125, 255, 92, 0.95);
+    --panel-solid: rgba(14, 18, 10, 0.88);
+    --panel-soft: rgba(14, 18, 10, 0.7);
+    --item-bg: rgba(14, 18, 10, 0.8);
+    --item-active-bg: rgba(125, 255, 92, 0.16);
+    --bar-bg: rgba(14, 18, 10, 0.92);
+    --grid-op: 0.03;
+    --frame-c: rgba(125, 255, 92, 0.55);
+}
+
+/* ---- style decorations ------------------------------------------------ */
+
+/* CRT: phosphor scanlines over everything + text bloom */
+[data-theme='crt'] body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 250;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.22) 0,
+        rgba(0, 0, 0, 0.22) 1px,
+        transparent 1px,
+        transparent 3px
+    );
+}
+
+[data-theme='crt'] * {
+    text-shadow: 0 0 6px rgba(var(--fui-accent-rgb), 0.5);
+}
+
+/* Mil-Spec: L-shaped corner brackets on marked panels */
+[data-theme='milspec'] [data-bracket]::before,
+[data-theme='milspec'] [data-bracket]::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: 1px solid var(--fui-accent);
+    pointer-events: none;
+}
+
+[data-theme='milspec'] [data-bracket]::before {
+    top: -1px;
+    left: -1px;
+    border-right: 0;
+    border-bottom: 0;
+}
+
+[data-theme='milspec'] [data-bracket]::after {
+    bottom: -1px;
+    right: -1px;
+    border-left: 0;
+    border-top: 0;
+}
+
+/* ---- base ------------------------------------------------------------- */
 
 * {
     box-sizing: border-box;
@@ -31,8 +292,8 @@ body {
 }
 
 ::selection {
-    background: rgba(0, 247, 255, 0.3);
-    color: #fff;
+    background: rgba(var(--fui-accent-rgb), 0.3);
+    color: var(--fui-text-hi);
 }
 
 button {

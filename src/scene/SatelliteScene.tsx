@@ -2,11 +2,9 @@ import { useEffect, useMemo, useRef } from 'react';
 import { useFrame, type ThreeEvent } from '@react-three/fiber';
 import gsap from 'gsap';
 import * as THREE from 'three';
-import { FUI_CYAN, OVERVIEW, type FocusId, type ModelDef } from '../lib/fleet';
+import { OVERVIEW, type FocusId, type ModelDef } from '../lib/fleet';
 import type { Analysis } from '../lib/parts';
 import { PartMarker } from './PartMarker';
-
-const CYAN = new THREE.Color(FUI_CYAN);
 
 interface ColoredMaterial extends THREE.Material {
     color?: THREE.Color;
@@ -34,6 +32,8 @@ interface RuntimeStore {
 interface SatelliteSceneProps {
     scene: THREE.Object3D;
     analysis: Analysis;
+    /** theme accent, drives the focused-part emissive pulse */
+    accent: string;
     model: ModelDef;
     focus: FocusId;
     wireframe: boolean;
@@ -49,6 +49,7 @@ interface SatelliteSceneProps {
 export function SatelliteScene({
     scene,
     analysis,
+    accent,
     model,
     focus,
     wireframe,
@@ -58,6 +59,7 @@ export function SatelliteScene({
     const groupRef = useRef<THREE.Group>(null);
     const hoverRef = useRef<string | null>(null);
     const storeRef = useRef<RuntimeStore>({ analysis: null, list: [] });
+    const accentColor = useMemo(() => new THREE.Color(accent), [accent]);
 
     // Camera frames are computed in unrotated model space, so when a
     // subsystem is focused the model eases back to its canonical orientation
@@ -123,9 +125,9 @@ export function SatelliteScene({
             const baseEm = r.mat.__fuiBaseEmissive;
             if (baseEm && r.mat.emissive) {
                 r.mat.emissive.copy(baseEm);
-                r.mat.emissive.r += CYAN.r * k;
-                r.mat.emissive.g += CYAN.g * k;
-                r.mat.emissive.b += CYAN.b * k;
+                r.mat.emissive.r += accentColor.r * k;
+                r.mat.emissive.g += accentColor.g * k;
+                r.mat.emissive.b += accentColor.b * k;
             }
         }
 

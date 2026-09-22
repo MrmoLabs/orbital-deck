@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useProgress } from '@react-three/drei';
-import { FUI_CYAN, type ModelDef } from '../lib/fleet';
+import type { ModelDef } from '../lib/fleet';
 
 const caret = keyframes`
     0%, 100% { opacity: 1; }
@@ -19,9 +19,7 @@ const Screen = styled.div<{ $hidden: boolean }>`
     align-items: center;
     justify-content: center;
     gap: 18px;
-    background:
-        radial-gradient(ellipse at center, rgba(0, 40, 60, 0.35), rgba(4, 6, 11, 0.98) 70%),
-        #04060b;
+    background: var(--boot-bg);
     opacity: ${(p) => (p.$hidden ? 0 : 1)};
     transition: opacity 0.8s ease;
     pointer-events: none;
@@ -31,29 +29,29 @@ const Title = styled.div`
     font-family: 'Consolas', 'Courier New', monospace;
     font-size: 34px;
     letter-spacing: 12px;
-    color: #e8feff;
-    text-shadow: 0 0 18px rgba(0, 247, 255, 0.6);
+    color: var(--fui-text-hi);
+    text-shadow: 0 0 18px rgba(var(--fui-accent-rgb), 0.6);
 `;
 
 const Sub = styled.div`
     font-family: 'Consolas', 'Courier New', monospace;
     font-size: 12px;
     letter-spacing: 4px;
-    color: rgba(0, 247, 255, 0.65);
+    color: rgba(var(--fui-accent-rgb), 0.65);
 `;
 
 const BarOuter = styled.div`
     width: min(440px, 70vw);
     height: 6px;
-    border: 1px solid rgba(0, 247, 255, 0.4);
+    border: 1px solid rgba(var(--fui-accent-rgb), 0.4);
     padding: 1px;
 `;
 
 const BarFill = styled.div<{ $pct: number }>`
     height: 100%;
     width: ${(p) => p.$pct}%;
-    background: ${FUI_CYAN};
-    box-shadow: 0 0 10px ${FUI_CYAN};
+    background: var(--fui-accent);
+    box-shadow: 0 0 10px var(--fui-accent);
     transition: width 0.25s ease;
 `;
 
@@ -61,7 +59,7 @@ const Status = styled.div`
     font-family: 'Consolas', 'Courier New', monospace;
     font-size: 11px;
     letter-spacing: 2px;
-    color: rgba(0, 247, 255, 0.75);
+    color: rgba(var(--fui-accent-rgb), 0.75);
 
     &::after {
         content: '▌';

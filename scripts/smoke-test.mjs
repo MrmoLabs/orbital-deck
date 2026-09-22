@@ -122,10 +122,31 @@ try {
     });
     await sleep(400);
 
-    // --- fleet switching: every model loads, frames and focuses --------------
+    // --- theme dropdown: opens, every theme applies, cycles and persists -----
+    const THEME_ORDER = ['yorha', 'crt', 'glass', 'blueprint', 'milspec', 'fui'];
+    for (const want of THEME_ORDER) {
+        await clickSel('[data-theme-btn]'); // open the dropdown
+        await sleep(250);
+        await clickSel(`[data-theme-option="${want}"]`); // pick (also closes)
+        await sleep(700);
+        const id = await page.evaluate(() => document.documentElement.dataset.theme ?? '');
+        note(`[theme] -> ${id || '(none)'}`);
+        if (id !== want) fail(`[fail] theme expected ${want}, got ${id || '(none)'}`);
+        const menuStillOpen = await page.evaluate(() => {
+            const trigger = document.querySelector('[data-theme-btn]');
+            const menu = trigger?.parentElement?.querySelector('[role="listbox"]');
+            return menu ? getComputedStyle(menu).display === 'flex' : false;
+        });
+        if (menuStillOpen) fail(`[fail] theme menu still open after picking ${want}`);
+        await page.screenshot({ path: `${OUT}\\shot-theme-${id || 'none'}.png` });
+    }
+
+    // --- fleet dropdown: every model loads, frames and focuses --------------
     const FLEET_IDS = ['hst', 'tdrs', 'goes', 'soho', 'ssl1300', 'sdo'];
     for (const id of FLEET_IDS) {
-        await clickSel(`[data-fleet="${id}"]`);
+        await clickSel('[data-fleet-btn]'); // open the top-bar dropdown
+        await sleep(250);
+        await clickSel(`[data-fleet="${id}"]`); // pick (also closes)
         await sleep(5000); // GLB load + camera settle
         await page.screenshot({ path: `${OUT}\\shot-model-${id}.png` });
 

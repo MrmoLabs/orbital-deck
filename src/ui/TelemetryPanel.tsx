@@ -13,12 +13,13 @@ const Panel = styled.aside`
     flex-direction: column;
     gap: 14px;
     padding: 16px;
-    background: rgba(4, 8, 14, 0.78);
-    border: 1px solid rgba(0, 247, 255, 0.22);
-    border-top: 3px solid #00f7ff;
-    backdrop-filter: blur(6px);
+    background: var(--panel-solid);
+    border: var(--panel-border-w) var(--panel-border-style) var(--panel-border);
+    border-top: 3px solid var(--fui-accent);
+    border-radius: var(--panel-radius);
+    backdrop-filter: var(--panel-blur);
     font-family: 'Consolas', 'Courier New', monospace;
-    box-shadow: 0 0 24px rgba(0, 0, 0, 0.5);
+    box-shadow: var(--panel-shadow);
 `;
 
 const Head = styled.div`
@@ -30,25 +31,26 @@ const Head = styled.div`
 const Code = styled.span`
     font-size: 11px;
     letter-spacing: 2px;
-    color: #00f7ff;
+    color: var(--fui-accent);
 `;
 
 const State = styled.span`
     font-size: 10px;
     letter-spacing: 1.5px;
-    color: #39ff9e;
+    color: var(--fui-ok);
 `;
 
 const Name = styled.div`
-    font-size: 14px;
+    font-family: var(--font-display);
+    font-size: 15px;
     letter-spacing: 2.5px;
-    color: #e8feff;
+    color: var(--fui-text-hi);
 `;
 
 const NameZh = styled.div`
     font-size: 11px;
     letter-spacing: 2px;
-    color: rgba(160, 200, 210, 0.65);
+    color: rgba(var(--fui-muted-rgb), 0.65);
     margin-top: 3px;
 `;
 
@@ -56,14 +58,14 @@ const Blurb = styled.p`
     margin: 0;
     font-size: 11px;
     line-height: 1.7;
-    color: rgba(160, 200, 210, 0.75);
+    color: rgba(var(--fui-muted-rgb), 0.75);
 `;
 
 const SectionTitle = styled.div`
     font-size: 10px;
     letter-spacing: 2.5px;
-    color: rgba(0, 247, 255, 0.5);
-    border-bottom: 1px dashed rgba(0, 247, 255, 0.2);
+    color: rgba(var(--fui-accent-rgb), 0.5);
+    border-bottom: 1px dashed rgba(var(--fui-accent-rgb), 0.2);
     padding-bottom: 5px;
 `;
 
@@ -83,32 +85,32 @@ const RowHead = styled.div`
 const Label = styled.span`
     font-size: 10px;
     letter-spacing: 1.4px;
-    color: rgba(160, 200, 210, 0.7);
+    color: rgba(var(--fui-muted-rgb), 0.7);
 `;
 
 const Value = styled.span`
     font-size: 13px;
     letter-spacing: 1px;
-    color: #b9f6ff;
+    color: var(--fui-text-mid);
     font-variant-numeric: tabular-nums;
 
     small {
         font-size: 9px;
-        color: rgba(0, 247, 255, 0.55);
+        color: rgba(var(--fui-accent-rgb), 0.55);
         margin-left: 4px;
     }
 `;
 
 const Track = styled.div`
     height: 3px;
-    background: rgba(0, 247, 255, 0.12);
+    background: rgba(var(--fui-accent-rgb), 0.12);
 `;
 
 const Fill = styled.div<{ $pct: number }>`
     height: 100%;
     width: ${(p) => p.$pct}%;
-    background: linear-gradient(90deg, rgba(0, 247, 255, 0.55), #00f7ff);
-    box-shadow: 0 0 6px rgba(0, 247, 255, 0.7);
+    background: linear-gradient(90deg, rgba(var(--fui-accent-rgb), 0.55), var(--fui-accent));
+    box-shadow: 0 0 6px rgba(var(--fui-accent-rgb), 0.7);
     transition: width 0.5s ease;
 `;
 
@@ -116,8 +118,8 @@ const Hint = styled.div`
     font-size: 10px;
     line-height: 1.7;
     letter-spacing: 1px;
-    color: rgba(255, 179, 0, 0.75);
-    border: 1px dashed rgba(255, 179, 0, 0.4);
+    color: rgba(var(--fui-warn-rgb), 0.75);
+    border: 1px dashed rgba(var(--fui-warn-rgb), 0.4);
     padding: 8px 10px;
 `;
 
@@ -149,7 +151,7 @@ export function TelemetryPanel({ model, focus, values }: TelemetryPanelProps) {
     const part = focus === OVERVIEW ? null : partById(model, focus);
 
     return (
-        <Panel>
+        <Panel data-bracket>
             <Head>
                 <Code>{part ? part.code : 'CMD-00'}</Code>
                 <State>{part ? 'FOCUSED' : 'ALL SYSTEMS NOMINAL'}</State>
