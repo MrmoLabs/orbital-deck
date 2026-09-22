@@ -1,5 +1,5 @@
 {
-  "name": "rogue-station",
+  "name": "orbital-deck",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "smoke": "node scripts/smoke-test.mjs"
+    "smoke": "node scripts/smoke-test.mjs",
+    "capture": "node scripts/capture-readme.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",

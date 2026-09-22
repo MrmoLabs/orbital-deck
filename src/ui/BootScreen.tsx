@@ -103,7 +103,7 @@ export function BootScreen({ model }: { model: ModelDef }) {
 
     return (
         <Screen $hidden={state === 'fading'}>
-            <Title>ROGUE STATION</Title>
+            <Title>ORBITAL DECK</Title>
             <Sub>ORBITAL INSPECTION TERMINAL // {model.code}</Sub>
             <BarOuter>
                 <BarFill $pct={pct} />

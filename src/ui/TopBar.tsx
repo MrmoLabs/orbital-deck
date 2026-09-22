@@ -120,7 +120,7 @@ export function TopBar({ model, onSelectModel }: TopBarProps) {
         <Bar>
             <Left>
                 <Logo>
-                    ROGUE<span>STATION</span>
+                    ORBITAL<span>DECK</span>
                 </Logo>
                 <Divider />
                 {/* fleet picker lives in the top bar as a dropdown */}

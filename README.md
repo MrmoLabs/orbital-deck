@@ -1,14 +1,36 @@
-# Rogue Station 🛰️
+# ORBITAL DECK 🛰️
 
 [中文版](./README_ZH.md)
 
 **A high-fidelity 3D satellite visualization and inspection platform.**
 
-Rogue Station is an interactive WebGL-based visualization built with React and Three.js. It features a futuristic industrial aesthetic (FUI) with detailed 3D models, smooth camera transitions, and dynamic data overlays.
+ORBITAL DECK is an interactive WebGL-based visualization built with React and Three.js. It features a futuristic industrial aesthetic (FUI) with detailed 3D models, smooth camera transitions, and dynamic data overlays.
 
-![Hero Image](./src/assets/preview_demo.gif)
+![Hero GIF: boot sequence, orbit tour, subsystem focus and theme switching](./src/assets/preview_demo.gif)
 
-## ✨ Features
+## Screenshots
+
+**6 interface themes** — each is a full restyle with its own palette *and* its own 3D backdrop:
+
+| FUI Classic | YoRHa |
+| :---: | :---: |
+| ![FUI Classic — starfield](./docs/theme-fui.png) | ![YoRHa — amber dust](./docs/theme-yorha.png) |
+
+| CRT Phosphor | Glassmorphism |
+| :---: | :---: |
+| ![CRT phosphor glow](./docs/theme-crt.png) | ![Glass aurora bokeh](./docs/theme-glass.png) |
+
+| Blueprint | Mil-Spec |
+| :---: | :---: |
+| ![Blueprint drafting grid](./docs/theme-blueprint.png) | ![Mil-Spec radar scope](./docs/theme-milspec.png) |
+
+**Inspection views** — subsystem focus with dimmed surroundings, and fleet switching (Hubble):
+
+| Subsystem focus | Fleet · HST |
+| :---: | :---: |
+| ![Solar array focus](./docs/focus-solar.png) | ![Hubble overview](./docs/fleet-hst.png) |
+
+## Features
 
 - **Unified Cockpit Layout**: Full-width top bar (logo · FLEET dropdown · clock/badges) and full-width bottom strip (toggles · hint · STYLE dropdown), with the subsystem matrix panelized as a left rail and a 1px corner-tick viewport frame around the 3D stage.
 - **Fleet of 6 Real Spacecraft**: Switch between NASA 3D Resources assets via the FLEET dropdown in the top bar — SDO, Hubble (HST), TDRS, GOES, SOHO and an SSL-1300 communications bus. Each model is auto-normalized to one camera envelope.
@@ -23,7 +45,7 @@ Rogue Station is an interactive WebGL-based visualization built with React and T
 - **Boot Sequence**: Loading screen with Draco decode progress, re-armed on every fleet switch.
 - **Post-Processing**: Bloom + vignette over the per-theme gradient sky.
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Framework**: [React 19](https://react.dev/)
 - **3D Engine**: [Three.js](https://threejs.org/) via [@react-three/fiber](https://github.com/pmndrs/react-three-fiber)
@@ -33,7 +55,7 @@ Rogue Station is an interactive WebGL-based visualization built with React and T
 - **Build Tool**: [Vite](https://vitejs.dev/)
 - **Post-Processing**: [@react-three/postprocessing](https://github.com/pmndrs/react-postprocessing)
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -44,8 +66,8 @@ Rogue Station is an interactive WebGL-based visualization built with React and T
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Mrmo072/rogue-station.git
-   cd rogue-station
+   git clone https://github.com/MrmoLabs/orbital-deck.git
+   cd orbital-deck
    ```
 
 2. Install dependencies:
@@ -63,10 +85,11 @@ Rogue Station is an interactive WebGL-based visualization built with React and T
    npm run smoke
    ```
 
-## 📁 Project Structure
+## Project Structure
 
 - `public/models/`: 6 NASA glTF assets (SDO, HST, TDRS, GOES, SOHO, SSL-1300; Draco-compressed where applicable).
 - `public/draco/`: Locally bundled Draco decoder (no CDN dependency).
+- `docs/`: README screenshots (per-theme gallery, inspection views).
 - `src/styles/`: Style-sheet split — `base.css` (default tokens + element defaults), `themes.css` (per-theme token overrides), `decorations.css` (CRT scanlines, Mil-Spec brackets), assembled by `index.css`.
 - `src/lib/`: Domain logic.
   - `fleet/`: Fleet registry — `types.ts` (domain types + helpers), `models/` (one spacecraft per file: subsystem rules, camera directions, telemetry channels), `index.ts` (FLEET assembly).
@@ -82,15 +105,16 @@ Rogue Station is an interactive WebGL-based visualization built with React and T
   - `PartMarker.tsx`: Anchored HUD markers.
 - `src/ui/`: HUD layer (top bar with fleet dropdown, left subsystem rail, telemetry panel, bottom strip with style dropdown, dropdown primitive, boot screen).
 - `scripts/smoke-test.mjs`: Headless Chrome smoke test (covers both dropdowns, all 6 themes/5 fleet models + drag-guard regression).
+- `scripts/capture-readme.mjs`: Records the hero GIF — drives a scripted tour while Chrome screencast streams frames, then encodes via ffmpeg (`npm run capture`).
 
-## ⚡ Bundle Splitting
+## Bundle Splitting
 
 Vite `manualChunks` splits vendors (`three` / `react` / `gsap`) and the 3D layer is dynamically imported, so the initial payload is the small HUD shell (~85 kB gzipped) while the 3D engine streams in behind the boot screen.
 
-## 📦 3D Assets
+## 3D Assets
 
 Spacecraft models come from [NASA 3D Resources](https://github.com/nasa/NASA-3D-Resources) — *"These assets are free and without copyright."* See the NASA images/media usage guidelines for details.
 
-## 📜 License
+## License
 
 MIT License. See [LICENSE](LICENSE) for details.
