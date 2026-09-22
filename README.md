@@ -10,11 +10,15 @@ Rogue Station is an interactive WebGL-based visualization built with React and T
 
 ## ✨ Features
 
-- **Interactive 3D Inspection**: Seamlessly focus on specific satellite modules (e.g., Solar Arrays, High-Gain Antenna).
-- **Cinematic Transitions**: Smooth camera movement powered by GSAP for a professional browsing experience.
-- **Dynamic FUI Overlays**: Real-time data labels providing system status and telemetry information.
-- **Blueprint Aesthetic**: High-contrast, wireframe-style rendering for a holographic industrial look.
-- **Post-Processing**: Enhanced visual quality with Bloom effects and cinematic color grading.
+- **Fleet of 6 Real Spacecraft**: Switch between NASA 3D Resources assets from the top FLEET bar — SDO, Hubble (HST), TDRS, GOES, SOHO and an SSL-1300 communications bus. Each model is auto-normalized to one camera envelope.
+- **Subsystem Inspection**: Click any part in 3D (raycast picking) or use the subsystem matrix — the camera flies to that module, everything else dims, and the focused part pulses with a cyan glow. Part classification is derived per-model from GLB material names.
+- **Geometry-Anchored Camera Pivots**: Orbit targets use the vertex-mean centroid (snapped onto real geometry when it floats in a gap), so rotating the view always pivots around the part you see — never around a floating label.
+- **Drag-Safe Gestures**: A drag that ends over empty space no longer counts as a "click blank to return to overview" — manual camera moves stay put.
+- **Live FUI Telemetry**: Per-model simulated housekeeping/orbit telemetry (GEO / LEO / Sun-Earth L1 …) with animated bars, per-subsystem metric stacks and anchored HUD markers.
+- **Blueprint Mode**: One click turns the whole spacecraft into the classic wireframe/holographic look.
+- **Cinematic Transitions**: Smooth camera choreography powered by GSAP + OrbitControls; focusing eases the model back to its canonical orientation.
+- **Boot Sequence**: Loading screen with Draco decode progress, re-armed on every fleet switch.
+- **Post-Processing**: Bloom + vignette over a starfield.
 
 ## 🛠️ Tech Stack
 
@@ -51,15 +55,31 @@ Rogue Station is an interactive WebGL-based visualization built with React and T
    npm run dev
    ```
 
+4. (Optional) Headless smoke test — needs Chrome and a running dev server:
+   ```bash
+   npm run smoke
+   ```
+
 ## 📁 Project Structure
 
-- `src/components/`: Core 3D and UI components.
-  - `Satellite.tsx`: The primary satellite model and logic.
-  - `Experience.tsx`: Scene environment and canvas setup.
-  - `UIOverlay.tsx`: Interactive control panel.
-  - `DataLabel.tsx`: Holographic data markers.
-  - `CameraRig.tsx`: Camera animation logic.
-- `src/assets/`: 3D models and textures.
+- `public/models/`: 6 NASA glTF assets (SDO, HST, TDRS, GOES, SOHO, SSL-1300; Draco-compressed where applicable).
+- `public/draco/`: Locally bundled Draco decoder (no CDN dependency).
+- `src/lib/`: Domain logic.
+  - `fleet.ts`: Fleet registry — per-model subsystem rules, camera directions, telemetry channels.
+  - `parts.ts`: Mesh analysis (surface-attached pivots per subsystem, scale normalization) and camera framing.
+  - `telemetry.ts`: Simulated telemetry random walk.
+  - `dragGuard.ts`: Distinguishes orbit drags from genuine clicks.
+- `src/scene/`: 3D layer.
+  - `Experience.tsx`: Canvas, lighting rig, starfield, post-processing.
+  - `SatelliteScene.tsx`: Model rendering, per-subsystem highlight/dim, raycast picking.
+  - `CameraRig.tsx`: GSAP camera choreography.
+  - `PartMarker.tsx`: Anchored HUD markers.
+- `src/ui/`: HUD layer (top bar, fleet selector, subsystem matrix, telemetry panel, bottom bar, boot screen).
+- `scripts/smoke-test.mjs`: Headless Chrome smoke test (covers fleet switching + drag-guard regression).
+
+## 📦 3D Assets
+
+Spacecraft models come from [NASA 3D Resources](https://github.com/nasa/NASA-3D-Resources) — *"These assets are free and without copyright."* See the NASA images/media usage guidelines for details.
 
 ## 📜 License
 
