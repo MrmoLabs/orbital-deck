@@ -67,20 +67,25 @@ Rogue Station is an interactive WebGL-based visualization built with React and T
 
 - `public/models/`: 6 NASA glTF assets (SDO, HST, TDRS, GOES, SOHO, SSL-1300; Draco-compressed where applicable).
 - `public/draco/`: Locally bundled Draco decoder (no CDN dependency).
+- `src/styles/`: Style-sheet split — `base.css` (default tokens + element defaults), `themes.css` (per-theme token overrides), `decorations.css` (CRT scanlines, Mil-Spec brackets), assembled by `index.css`.
 - `src/lib/`: Domain logic.
-  - `fleet.ts`: Fleet registry — per-model subsystem rules, camera directions, telemetry channels.
+  - `fleet/`: Fleet registry — `types.ts` (domain types + helpers), `models/` (one spacecraft per file: subsystem rules, camera directions, telemetry channels), `index.ts` (FLEET assembly).
+  - `parts/`: `analysis.ts` (surface-attached pivots per subsystem, scale normalization) + `framing.ts` (camera framing).
   - `themes.ts`: Page theme registry — 6 interface styles (palette + panel/border/material tokens, scene gradient stops, backdrop kind), dropdown labels, persistence.
-  - `parts.ts`: Mesh analysis (surface-attached pivots per subsystem, scale normalization) and camera framing.
   - `telemetry.ts`: Simulated telemetry random walk.
   - `dragGuard.ts`: Distinguishes orbit drags from genuine clicks.
 - `src/scene/`: 3D layer.
-  - `Experience.tsx`: Canvas, lighting rig, gradient sky, post-processing.
-  - `Backdrop.tsx`: Per-theme scene background (gradient texture + starfield / dust / aurora / drafting grid / radar scope).
+  - `Experience.tsx`: Canvas, lighting rig, gradient sky, post-processing (lazy-loaded via `React.lazy` so the HUD paints first).
+  - `backdrops/`: Per-theme scene background — `Sky` (gradient texture), `Particles` (dust/aurora), `Geometry` (drafting grid/radar scope), `Backdrop` (kind switch).
   - `SatelliteScene.tsx`: Model rendering, per-subsystem highlight/dim, raycast picking.
   - `CameraRig.tsx`: GSAP camera choreography.
   - `PartMarker.tsx`: Anchored HUD markers.
 - `src/ui/`: HUD layer (top bar with fleet dropdown, left subsystem rail, telemetry panel, bottom strip with style dropdown, dropdown primitive, boot screen).
 - `scripts/smoke-test.mjs`: Headless Chrome smoke test (covers both dropdowns, all 6 themes/5 fleet models + drag-guard regression).
+
+## ⚡ Bundle Splitting
+
+Vite `manualChunks` splits vendors (`three` / `react` / `gsap`) and the 3D layer is dynamically imported, so the initial payload is the small HUD shell (~85 kB gzipped) while the 3D engine streams in behind the boot screen.
 
 ## 📦 3D Assets
 

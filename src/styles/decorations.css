@@ -1,0 +1,46 @@
+/* ---- style decorations: non-token rules that belong to a single theme --- */
+
+/* CRT: phosphor scanlines over everything + text bloom */
+[data-theme='crt'] body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 250;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.22) 0,
+        rgba(0, 0, 0, 0.22) 1px,
+        transparent 1px,
+        transparent 3px
+    );
+}
+
+[data-theme='crt'] * {
+    text-shadow: 0 0 6px rgba(var(--fui-accent-rgb), 0.5);
+}
+
+/* Mil-Spec: L-shaped corner brackets on marked panels */
+[data-theme='milspec'] [data-bracket]::before,
+[data-theme='milspec'] [data-bracket]::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: 1px solid var(--fui-accent);
+    pointer-events: none;
+}
+
+[data-theme='milspec'] [data-bracket]::before {
+    top: -1px;
+    left: -1px;
+    border-right: 0;
+    border-bottom: 0;
+}
+
+[data-theme='milspec'] [data-bracket]::after {
+    bottom: -1px;
+    right: -1px;
+    border-left: 0;
+    border-top: 0;
+}

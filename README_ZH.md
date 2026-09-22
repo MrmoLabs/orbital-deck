@@ -67,20 +67,25 @@ Rogue Station 是一套基于 WebGL 的交互式可视化系统，采用 React �
 
 - `public/models/`：6 个 NASA glTF 资产（SDO、HST、TDRS、GOES、SOHO、SSL-1300，按需 Draco 压缩）。
 - `public/draco/`：本地内置的 Draco 解码器（不依赖外网 CDN）。
+- `src/styles/`：样式拆分——`base.css`（默认令牌 + 元素基础）、`themes.css`（各主题令牌覆盖）、`decorations.css`（CRT 扫描线、军规角标），由 `index.css` 汇总引入。
 - `src/lib/`：领域逻辑。
-  - `fleet.ts`：机队注册表——每个模型的子系统划分规则、相机取向、遥测通道。
+  - `fleet/`：机队注册表——`types.ts`（领域类型 + 通用助手）、`models/`（每颗航天器一个文件：子系统划分规则、相机取向、遥测通道）、`index.ts`（FLEET 组装）。
+  - `parts/`：`analysis.ts`（分系统表面吸附枢轴、尺度归一化）+ `framing.ts`（相机取景）。
   - `themes.ts`：页面主题注册表——6 种界面风格（配色 + 面板/边框/材质令牌、场景渐变色、背景层类型）、下拉标签、持久化。
-  - `parts.ts`：网格分析（分系统表面吸附枢轴、尺度归一化）与相机取景。
   - `telemetry.ts`：模拟遥测随机游走。
   - `dragGuard.ts`：区分轨道拖拽与真实点击。
 - `src/scene/`：3D 层。
-  - `Experience.tsx`：Canvas、灯光阵列、渐变天空、后期处理。
-  - `Backdrop.tsx`：按主题的场景背景（渐变贴图 + 星场/尘埃/极光/工程网格/雷达界面）。
+  - `Experience.tsx`：Canvas、灯光阵列、渐变天空、后期处理（经 `React.lazy` 懒加载，HUD 先行绘制）。
+  - `backdrops/`：按主题的场景背景——`Sky`（渐变贴图）、`Particles`（尘埃/极光）、`Geometry`（工程网格/雷达界面）、`Backdrop`（类型开关）。
   - `SatelliteScene.tsx`：模型渲染、分系统高亮/压暗、射线拾取。
   - `CameraRig.tsx`：GSAP 摄像机编排。
   - `PartMarker.tsx`：锚定式 HUD 标记。
 - `src/ui/`：HUD 层（顶栏机队下拉、左侧子系统导轨、遥测面板、底条样式下拉、下拉原语、启动屏）。
 - `scripts/smoke-test.mjs`：无头 Chrome 冒烟测试（覆盖两个下拉、全部 6 主题/5 机队模型 + 拖拽守卫回归）。
+
+## ⚡ 打包拆分
+
+Vite `manualChunks` 拆分 vendor（`three` / `react` / `gsap`），3D 层动态导入：首屏仅需 HUD 外壳（约 85 kB gzip），3D 引擎在启动屏后按需流入。
 
 ## 📦 3D 模型来源
 

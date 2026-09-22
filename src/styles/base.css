@@ -1,0 +1,93 @@
+/* ---- base layer: default (FUI) tokens + element defaults ----------------
+   Color tokens are paired with src/lib/themes.ts (accent/bg feed the WebGL
+   scene). Shape/material tokens restyle panels, borders and controls per
+   theme — overrides live in ./themes.css. */
+
+:root {
+    font-family: 'Consolas', 'Cascadia Code', 'Courier New', monospace;
+    line-height: 1.5;
+    font-weight: 400;
+    color-scheme: dark;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    /* ============ THEME TOKENS — FUI CLASSIC (default) ============ */
+    --fui-accent: #00f7ff;
+    --fui-accent-rgb: 0, 247, 255;
+    --fui-accent-soft: #7ef7ff;
+    --fui-bg: #04060b;
+    --fui-text-hi: #e8feff;
+    --fui-text-dim: #7fa8b5;
+    --fui-text-dim-rgb: 127, 168, 181;
+    --fui-text-mid: #b9f6ff;
+    --fui-muted-rgb: 160, 200, 210;
+    --fui-ok: #39ff9e;
+    --fui-ok-rgb: 57, 255, 158;
+    --fui-warn: #ffb300;
+    --fui-warn-rgb: 255, 179, 0;
+
+    /* material / shape */
+    --fui-panel-rgb: 4, 8, 14;
+    --panel-radius: 0;
+    --panel-btn-radius: 0;
+    --panel-blur: blur(6px);
+    --panel-shadow: 0 0 24px rgba(0, 0, 0, 0.5);
+    --panel-border-w: 1px;
+    --panel-border-style: solid;
+    --panel-border: rgba(var(--fui-accent-rgb), 0.22);
+    --panel-border-strong: rgba(var(--fui-accent-rgb), 0.7);
+    --panel-solid: rgba(var(--fui-panel-rgb), 0.78);
+    --panel-soft: rgba(var(--fui-panel-rgb), 0.62);
+    --item-bg: rgba(var(--fui-panel-rgb), 0.72);
+    --item-active-bg: rgba(var(--fui-accent-rgb), 0.16);
+    --bar-bg: linear-gradient(180deg, rgba(var(--fui-panel-rgb), 0.95), rgba(var(--fui-panel-rgb), 0.45));
+    --hud-label: rgba(var(--fui-accent-rgb), 0.5);
+    --hud-hint: rgba(var(--fui-text-dim-rgb), 0.7);
+    --boot-bg: radial-gradient(ellipse at center, rgba(var(--fui-accent-rgb), 0.16), var(--fui-bg) 70%),
+        var(--fui-bg);
+
+    /* chrome: display font for headings/logo (theme may swap the family),
+       corner-grid density, cockpit frame corner-tick color */
+    --font-display: 'Consolas', 'Cascadia Code', 'Courier New', monospace;
+    --grid-op: 0.035;
+    --frame-c: rgba(0, 247, 255, 0.5);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--fui-bg);
+}
+
+#root {
+    width: 100%;
+    height: 100%;
+}
+
+::selection {
+    background: rgba(var(--fui-accent-rgb), 0.3);
+    color: var(--fui-text-hi);
+}
+
+button {
+    font-family: inherit;
+}
+
+canvas {
+    display: block;
+    touch-action: none;
+}
+
+/* drei Html markers render into plain divs */
+[data-part] {
+    user-select: none;
+}

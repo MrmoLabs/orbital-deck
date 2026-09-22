@@ -9,7 +9,7 @@ import { recordPointerDown, wasDrag } from '../lib/dragGuard';
 import type { ThemeDef } from '../lib/themes';
 import { SatelliteScene } from './SatelliteScene';
 import { CameraRig } from './CameraRig';
-import { Backdrop, SceneBackground } from './Backdrop';
+import { Backdrop, SceneBackground } from './backdrops';
 
 export interface ExperienceProps {
     theme: ThemeDef;
@@ -106,3 +106,5 @@ function SceneContent({ theme, model, focus, wireframe, autoRotate, onPick }: Ex
         </>
     );
 }
+
+export default Experience;

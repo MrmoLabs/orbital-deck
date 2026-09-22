@@ -1,0 +1,86 @@
+import { resolver, type ModelDef } from '../types';
+
+export const SSL1300: ModelDef = {
+    id: 'ssl1300',
+    code: 'SSL-1300',
+    name: 'COMMUNICATIONS SATELLITE BUS',
+    nameZh: '通信卫星平台',
+    url: '/models/SSL1300.glb',
+    commonLabel: 'GEO PLATFORM // 地球静止轨道平台',
+    fallback: 'bus',
+    common: [
+        { key: 'ssl_alt', label: 'ORBIT ALTITUDE', unit: 'km', base: 35786, spread: 1.0, decimals: 0 },
+        { key: 'ssl_vel', label: 'ORBIT VELOCITY', unit: 'km/s', base: 3.074, spread: 0.005, decimals: 3 },
+        { key: 'ssl_batt', label: 'BATTERY SOC', unit: '%', base: 91.5, spread: 0.6, decimals: 1 },
+        { key: 'ssl_per', label: 'ORBIT PERIOD', unit: 'min', base: 1436.1, spread: 0.1, decimals: 1 },
+    ],
+    resolve: resolver(
+        [
+            ['ngtdrss-solarpanel', 'solar'],
+            ['lcrd-solarpanel', 'solar'],
+            ['lasercom-dkgrey', 'solar'],
+            ['main_dish', 'antenna'],
+            ['stereo-detail', 'antenna'],
+            ['lasercom', 'payload'],
+        ],
+        'bus',
+    ),
+    parts: [
+        {
+            id: 'solar',
+            code: 'SAS-01',
+            name: 'SOLAR WINGS',
+            nameZh: '太阳能翼',
+            blurb: '双翼展开式砷化镓电池阵，为 1300 平台提供高于 5 kW 的在轨功率。',
+            dir: [0.05, 1.0, 0.35],
+            metrics: [
+                { key: 'ssl_av', label: 'ARRAY VOLTAGE', unit: 'V', base: 120.4, spread: 1.6, decimals: 1 },
+                { key: 'ssl_ai', label: 'ARRAY CURRENT', unit: 'A', base: 30.2, spread: 1.0, decimals: 1 },
+                { key: 'ssl_out', label: 'BUS OUTPUT', unit: 'W', base: 3620, spread: 55, decimals: 0 },
+                { key: 'ssl_trk', label: 'SUN TRACK ERROR', unit: 'deg', base: 0.09, spread: 0.04, decimals: 2 },
+            ],
+        },
+        {
+            id: 'antenna',
+            code: 'ANT-02',
+            name: 'COMM DISH',
+            nameZh: '通信碟形天线',
+            blurb: 'Ku/Ka 波段机动通信天线，支持广播与宽带转发业务。',
+            dir: [0.55, 0.45, -0.7],
+            metrics: [
+                { key: 'ssl_snr', label: 'LINK SNR', unit: 'dB', base: 16.2, spread: 0.8, decimals: 1 },
+                { key: 'ssl_ptl', label: 'POINTING ERR', unit: 'deg', base: 0.02, spread: 0.01, decimals: 2 },
+                { key: 'ssl_eirp', label: 'EIRP', unit: 'dBW', base: 64.8, spread: 0.7, decimals: 1 },
+                { key: 'ssl_twt', label: 'TWTA POWER', unit: 'W', base: 85, spread: 4, decimals: 0 },
+            ],
+        },
+        {
+            id: 'payload',
+            code: 'PAY-03',
+            name: 'LASER COMM TERMINAL',
+            nameZh: '激光通信终端',
+            blurb: 'LCRD 激光通信中继终端，以近红外光束实现高速保密数据传输。',
+            dir: [0.1, 0.0, -1.0],
+            metrics: [
+                { key: 'lct_pw', label: 'BEAM POWER', unit: 'mW', base: 1200, spread: 45, decimals: 0 },
+                { key: 'lct_err', label: 'POINTING ERR', unit: 'nrad', base: 45, spread: 8, decimals: 0 },
+                { key: 'lct_rate', label: 'DATA RATE', unit: 'Gbps', base: 2.4, spread: 0.06, decimals: 2 },
+                { key: 'lct_temp', label: 'TERMINAL TEMP', unit: '°C', base: 8.5, spread: 1.2, decimals: 1 },
+            ],
+        },
+        {
+            id: 'bus',
+            code: 'BUS-04',
+            name: 'SATELLITE BUS',
+            nameZh: '卫星平台',
+            blurb: 'SSL-1300 通用卫星平台，集成电源、姿控、热控与推进分系统。',
+            dir: [0.85, 0.45, 1.0],
+            metrics: [
+                { key: 'ssl_bv', label: 'BUS VOLTAGE', unit: 'V', base: 42.3, spread: 0.4, decimals: 1 },
+                { key: 'ssl_bt', label: 'AVIONICS TEMP', unit: '°C', base: 13.6, spread: 1.4, decimals: 1 },
+                { key: 'ssl_att', label: 'ATTITUDE ERR', unit: 'arcsec', base: 0.08, spread: 0.03, decimals: 3 },
+                { key: 'ssl_cpu', label: 'CPU LOAD', unit: '%', base: 49, spread: 5, decimals: 0 },
+            ],
+        },
+    ],
+};

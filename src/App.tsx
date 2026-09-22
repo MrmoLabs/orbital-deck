@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Suspense, lazy, useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { Experience } from './scene/Experience';
 import { TopBar } from './ui/TopBar';
 import { SubsystemNav } from './ui/SubsystemNav';
 import { TelemetryPanel } from './ui/TelemetryPanel';
@@ -9,6 +8,10 @@ import { BootScreen } from './ui/BootScreen';
 import { FLEET, MODEL_BY_ID, OVERVIEW, type FocusId } from './lib/fleet';
 import { useTelemetry } from './lib/telemetry';
 import { THEME_BY_ID, THEMES, loadThemeId, nextTheme } from './lib/themes';
+
+// 3D engine (three/gsap) is the bulk of the bundle — load it async so the
+// HUD shell paints immediately behind the boot screen.
+const Experience = lazy(() => import('./scene/Experience'));
 
 const AppContainer = styled.div`
     position: relative;
@@ -114,14 +117,16 @@ function App() {
 
     return (
         <AppContainer>
-            <Experience
-                theme={theme}
-                model={model}
-                focus={focus}
-                wireframe={wireframe}
-                autoRotate={autoRotate}
-                onPick={handlePick}
-            />
+            <Suspense fallback={null}>
+                <Experience
+                    theme={theme}
+                    model={model}
+                    focus={focus}
+                    wireframe={wireframe}
+                    autoRotate={autoRotate}
+                    onPick={handlePick}
+                />
+            </Suspense>
             <TopBar model={model} onSelectModel={handleModel} />
             <SubsystemNav model={model} focus={focus} onSelect={setFocus} />
             <TelemetryPanel model={model} focus={focus} values={values} />

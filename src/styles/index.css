@@ -1,0 +1,5 @@
+/* Style-sheet entry — order matters: default tokens, then overrides,
+   then single-theme decoration rules. */
+@import './base.css';
+@import './themes.css';
+@import './decorations.css';
